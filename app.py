@@ -88,7 +88,7 @@ class InterfaceApp:
 
         ##### MODIFICAR [1] #####
 
-        algorithms = ('BFS', 'DFS (Graph)', 'DFS (Backtracking)', 'ID (Backtracking)', 
+        algorithms = ('BFS', 'DFS (Graph)', 'DFS (Backtracking)', 'PI (Backtracking)', 
                       'Greedy_Manhattan', 'A_Manhattan', 'A_Euclidean', 'IDA_Manhattan')
 
         ##### ------------- #####

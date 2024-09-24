@@ -6,7 +6,7 @@ DEFAULT_INI_STATE = "125340687"
 DEFAULT_MAX_DEPTH = 30
 
 ##### MODIFICAR [4] #####
-ALGORITHMS        = ('BFS', 'DFS (Graph)', 'DFS (Backtracking)', 'ID (Backtraking)', 
+ALGORITHMS        = ('BFS', 'DFS (Graph)', 'DFS (Backtracking)', 'PI (Backtracking)', 
                      'Greedy_Manhattan', 'A_Manhattan',
                      'A_Euclidean', 'IDA_Manhattan') 
 ##### ------------- #####
