@@ -237,7 +237,7 @@ class InterfaceApp:
         global initialState, statepointer
         inputState = simpledialog.askstring('Initial State Entry', 'Please enter your initial state')
         if inputState is not None:
-            if self.validateState(inputState):
+            if utils.validateState(inputState):
                 initialState = inputState
                 self.reset()
                 app.displayStateOnGrid(initialState)
@@ -359,7 +359,7 @@ class InterfaceApp:
         Display input state to the grid
         :param state: String representation of the required state
         """
-        if not self.validateState(state):
+        if not utils.validateState(state):
             state = '000000000'
         self.cell0.configure(text=self.adjustDigit(state[0]))
         self.cell1.configure(text=self.adjustDigit(state[1]))
@@ -509,22 +509,6 @@ class InterfaceApp:
         else:
             app.fastforwardbutton.configure(state='enabled')
             app.nextbutton.configure(state='enabled')
-
-    @staticmethod
-    def validateState(inputState):
-        """
-        Validates given state
-        :param inputState: String representation of state to be validated
-        :return: boolean
-        """
-        seen = []
-        if inputState is None or len(inputState) != 9 or not inputState.isnumeric():
-            return False
-        for dig in inputState:
-            if dig in seen or dig == '9':
-                return False
-            seen.append(dig)
-        return True
 
     @staticmethod
     def adjustDigit(dig):

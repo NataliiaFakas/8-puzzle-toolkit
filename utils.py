@@ -75,9 +75,24 @@ def goalTest(state):
     return False
 
 
+def validateState(inputState):
+    """
+    Validates given state
+    :param inputState: String representation of state to be validated
+    :return: boolean
+    """
+    seen = []
+    if inputState is None or len(inputState) != 9 or not inputState.isnumeric():
+        return False
+    for dig in inputState:
+        if dig in seen or dig == '9':
+            return False
+        seen.append(dig)
+    return True
+
+
 # function to check if the start state solvable or not
 def isSolvable(digit):
-    
     count = 0
     for i in range(0, 9):
         for j in range(i, 9):
@@ -88,9 +103,6 @@ def isSolvable(digit):
 
     return count % 2 == 0
 
-
-
-# breadth first search algorithm
 
 # function checking if state is valid or out of bounds
 def checkValid(i, j):

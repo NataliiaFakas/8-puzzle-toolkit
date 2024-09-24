@@ -1,5 +1,4 @@
 import random
-import app
 import utils
 
 DEFAULT_INI_STATE = "125340687"
@@ -43,7 +42,7 @@ def batch_run(states,
     
     for state in states:
     
-        if not(app.InterfaceApp.validateState(state)):
+        if not(utils.validateState(state)):
             sys.stderr.write(f"\n[WW] State '{state}' is not valid. Please check format. Skipping...\n\n") 
             continue
     
