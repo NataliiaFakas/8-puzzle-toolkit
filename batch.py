@@ -6,7 +6,7 @@ DEFAULT_INI_STATE = "125340687"
 DEFAULT_MAX_DEPTH = 30
 
 ##### MODIFICAR [4] #####
-ALGORITHMS        = ('BFS', 'DFS (Graph)', 'DFS (Backtracking)', 'PI (Backtracking)', 
+ALGORITHMS        = ('BFS', 'DFS_Graph', 'DFS_Backtracking', 'PI_Backtracking', 
                      'Greedy_Manhattan', 'A_Manhattan',
                      'A_Euclidean', 'IDA_Manhattan') 
 ##### ------------- #####
@@ -25,7 +25,8 @@ def many_random_states(n):
         yield random_state()
  
 
-def batch_run(states, algorithms, 
+def batch_run(states, 
+              algorithms, 
               max_depth=DEFAULT_MAX_DEPTH, 
               print_info="all"):
 
@@ -37,7 +38,7 @@ def batch_run(states, algorithms,
     if print_info in {"all", "raw"}:
         print("# {:8s} {:20s} {:>10s} {:>10s} {:>10s} {:>10s} {:>10s} {:>12s}"\
                 .format("state", "strategy", "generated", "expanded", "max_stored", 
-                        "cost", "max_depth", "time(s)"))
+                        "sol_cost", "max_depth", "time(s)"))
         print("#")
     
     for state in states:
@@ -53,68 +54,68 @@ def batch_run(states, algorithms,
         for algorithm in algorithms:
     
             ##### MODIFICAR [6] #####
+
             if str(algorithm) == 'BFS':
                 utils.graphSearch(state, utils.function_1, utils.function_0)
-                path, cost, counter, depth, runtime, nodes, max_stored, memory_rep = \
+                path, sol_cost, expanded, depth, runtime, generated, max_stored, memory_rep = \
                           utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                           utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                           utils.max_counter, utils.max_rev_counter
    
-
-            elif str(algorithm) == 'DFS (Graph)':
+            elif str(algorithm) == 'DFS_Graph':
                 utils.graphSearch(state, utils.function_N, utils.function_0, max_depth)
-                path, cost, counter, depth, runtime, nodes, max_stored, memory_rep = \
+                path, sol_cost, expanded, depth, runtime, generated, max_stored, memory_rep = \
                           utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                           utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                           utils.max_counter, utils.max_rev_counter
     
-            elif str(algorithm) == 'DFS (Backtracking)':
+            elif str(algorithm) == 'DFS_Backtracking':
                 utils.DFS_B(state, max_depth)
-                path, cost, counter, depth, runtime, nodes, max_stored = \
+                path, sol_cost, expanded, depth, runtime, generated, max_stored = \
                           utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                           utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                           utils.max_node_stored
     
-            elif str(algorithm) == 'PI (Backtracking)':
+            elif str(algorithm) == 'PI_Backtracking':
                 utils.ID_B(state)
-                path, cost, counter, depth, runtime, nodes, max_stored = \
+                path, sol_cost, expanded, depth, runtime, generated, max_stored = \
                           utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                           utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                           utils.max_node_stored
     
             elif str(algorithm) == 'Greedy_Manhattan':
                 utils.graphSearch(state, utils.function_0, utils.getManhattanDistance)
-                path, cost, counter, depth, runtime, nodes, max_stored, memory_rep = \
+                path, sol_cost, expanded, depth, runtime, generated, max_stored, memory_rep = \
                           utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                           utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                           utils.max_counter, utils.max_rev_counter
     
             elif str(algorithm) == 'A_Manhattan':
                 utils.graphSearch(state, utils.function_1, utils.getManhattanDistance)
-                path, cost, counter, depth, runtime, nodes, max_stored, memory_rep = \
+                path, sol_cost, expanded, depth, runtime, generated, max_stored, memory_rep = \
                           utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                           utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                           utils.max_counter, utils.max_rev_counter
     
             elif str(algorithm) == 'A_Euclidean':
                 utils.graphSearch(state, utils.function_1, utils.getEuclideanDistance)
-                path, cost, counter, depth, runtime, nodes, max_stored, memory_rep = \
+                path, sol_cost, expanded, depth, runtime, generated, max_stored, memory_rep = \
                           utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                           utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                           utils.max_counter, utils.max_rev_counter
     
             elif str(algorithm) == 'IDA_Manhattan':
                 utils.IDA_B(state, utils.getManhattanDistance)
-                path, cost, counter, depth, runtime, nodes, max_stored = \
+                path, sol_cost, expanded, depth, runtime, generated, max_stored = \
                           utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                           utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                           utils.max_node_stored
     
     
-            depth = int(depth) # FIX
+            depth = int(depth) 
     
             if print_info in {"all", "raw"}:
-                print(f"""{state:10s} {algorithm:20s} {nodes:10d} {counter:10d} {max_stored:10d} {cost:10d} {depth:10d} {runtime:12.6f}""")
+                print(f"""{state:10s} {algorithm:20s} {generated:10d} {expanded:10d} {max_stored:10d} {sol_cost:10d} {depth:10d} {runtime:12.6f}""")
 
         if print_info in {"all", "raw"}:
             print("#")

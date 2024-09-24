@@ -8,7 +8,7 @@ import utils
 ### Global Variables to store the solution analytics ###
 algorithm = None
 initialState = None
-statepointer = cost = counter = depth = 0
+statepointer = sol_cost = expanded = depth = 0
 runtime = 0.0
 path = []
 cutDepth = 0
@@ -88,7 +88,7 @@ class InterfaceApp:
 
         ##### MODIFICAR [1] #####
 
-        algorithms = ('BFS', 'DFS (Graph)', 'DFS (Backtracking)', 'PI (Backtracking)', 
+        algorithms = ('BFS', 'DFS_Graph', 'DFS_Backtracking', 'PI_Backtracking', 
                       'Greedy_Manhattan', 'A_Manhattan', 'A_Euclidean', 'IDA_Manhattan')
 
         ##### ------------- #####
@@ -255,7 +255,7 @@ class InterfaceApp:
             algorithm = choice
 
             ##### MODIFICAR [2] #####
-            if algorithm in ['DFS (Graph)', 'DFS (Backtracking)']:
+            if algorithm in ['DFS_Graph', 'DFS_Backtracking']:
                 cutDepth = int(simpledialog.askstring('Cut depth', 'Please, enter your max depth'))
             ##### ------------- #####
         except:
@@ -268,14 +268,14 @@ class InterfaceApp:
         """
         global statepointer
         self.stopFastForward()
-        if statepointer < cost:
+        if statepointer < sol_cost:
             app.stopbutton.configure(state='enabled')
             statepointer += 1
             self.refreshFrame()
             ms = 100
-            if 100 < cost <= 1000:
+            if 100 < sol_cost <= 1000:
                 ms = 20
-            if cost > 1000:
+            if sol_cost > 1000:
                 ms = 1
             app._job = app.stepCount.after(ms, self.fastForward)
         else:
@@ -292,7 +292,7 @@ class InterfaceApp:
             app.stopbutton.configure(state='enabled')
             statepointer -= 1
             ms = 50
-            if cost > 1000:
+            if sol_cost > 1000:
                 ms = 1
             app._job = app.stepCount.after(ms, self.fastBackward)
         else:
@@ -340,10 +340,10 @@ class InterfaceApp:
             if force_display:
                 analytics += '\n< UNSOLVABLE >'
             analytics += '\n-------------------------------' \
-                         '\n' + 'Nodes generated: \n' + str(nodes) + \
-                         '\n' + 'Nodes expanded: \n' + str(counter) + \
+                         '\n' + 'Nodes generated: \n' + str(generated) + \
+                         '\n' + 'Nodes expanded: \n' + str(expanded) + \
                          '\n' + 'Max. nodes stored: \n' + str(max_stored) + \
-                         '\n' + 'Solution cost: \n' + str(cost) + \
+                         '\n' + 'Solution cost: \n' + str(sol_cost) + \
                          '\n' + 'Search depth: \n' + str(int(depth)) + \
                          '\n' + 'Running Time: \n{0:.2f} s\n'.format(runtime) 
                              
@@ -394,62 +394,62 @@ class InterfaceApp:
         Solves the puzzle with 'initialState' and the chosen 'algorithm'. Assumes the current state is ready to solve.
         """
        
-        global path, cost, counter, depth, runtime, nodes, max_stored, memory_rep
+        global path, sol_cost, expanded, depth, runtime, generated, max_stored, memory_rep
 
         ##### MODIFICAR [3] #####
 
         if str(algorithm) == 'BFS':
             utils.graphSearch(initialState, utils.function_1, utils.function_0)
-            path, cost, counter, depth, runtime, nodes, max_stored, memory_rep = \
+            path, sol_cost, expanded, depth, runtime, generated, max_stored, memory_rep = \
                       utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                       utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                       utils.max_counter, utils.max_rev_counter
 
-        elif str(algorithm) == 'DFS (Graph)':
+        elif str(algorithm) == 'DFS_Graph':
             utils.graphSearch(initialState, utils.function_N, utils.function_0, cutDepth)
-            path, cost, counter, depth, runtime, nodes, max_stored, memory_rep = \
+            path, sol_cost, expanded, depth, runtime, generated, max_stored, memory_rep = \
                       utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                       utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                       utils.max_counter, utils.max_rev_counter
 
-        elif str(algorithm) == 'DFS (Backtracking)':
+        elif str(algorithm) == 'DFS_Backtracking':
             utils.DFS_B(initialState,cutDepth)
-            path, cost, counter, depth, runtime, nodes, max_stored = \
+            path, sol_cost, expanded, depth, runtime, generated, max_stored = \
                       utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                       utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                       utils.max_node_stored
 
-        elif str(algorithm) == 'PI (Backtracking)':
+        elif str(algorithm) == 'PI_Backtracking':
             utils.ID_B(initialState)
-            path, cost, counter, depth, runtime, nodes, max_stored = \
+            path, sol_cost, expanded, depth, runtime, generated, max_stored = \
                       utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                       utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                       utils.max_node_stored
 
         elif str(algorithm) == 'Greedy_Manhattan':
             utils.graphSearch(initialState, utils.function_0, utils.getManhattanDistance)
-            path, cost, counter, depth, runtime, nodes, max_stored, memory_rep = \
+            path, sol_cost, expanded, depth, runtime, generated, max_stored, memory_rep = \
                       utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                       utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                       utils.max_counter, utils.max_rev_counter
 
         elif str(algorithm) == 'A_Manhattan':
             utils.graphSearch(initialState, utils.function_1, utils.getManhattanDistance)
-            path, cost, counter, depth, runtime, nodes, max_stored, memory_rep = \
+            path, sol_cost, expanded, depth, runtime, generated, max_stored, memory_rep = \
                       utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                       utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                       utils.max_counter, utils.max_rev_counter
 
         elif str(algorithm) == 'A_Euclidean':
             utils.graphSearch(initialState, utils.function_1, utils.getEuclideanDistance)
-            path, cost, counter, depth, runtime, nodes, max_stored, memory_rep = \
+            path, sol_cost, expanded, depth, runtime, generated, max_stored, memory_rep = \
                       utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                       utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                       utils.max_counter, utils.max_rev_counter
 
         elif str(algorithm) == 'IDA_Manhattan':
             utils.IDA_B(initialState, utils.getManhattanDistance)
-            path, cost, counter, depth, runtime, nodes, max_stored = \
+            path, sol_cost, expanded, depth, runtime, generated, max_stored = \
                       utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                       utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                       utils.max_node_stored
@@ -469,8 +469,8 @@ class InterfaceApp:
         """
         Resets global variables and the GUI frame. Removes currently registered solution
         """
-        global path, cost, counter, runtime
-        cost = counter = 0
+        global path, sol_cost, expanded, runtime
+        sol_cost = expanded = 0
         runtime = 0.0
         path = []
         self.resetGrid()
@@ -482,14 +482,14 @@ class InterfaceApp:
         Returns string representation of the step count to be displayed on the step-counter
         :return: String
         """
-        return str(statepointer) + ' / ' + str(cost)
+        return str(statepointer) + ' / ' + str(sol_cost)
 
     @staticmethod
     def refreshFrame():
         """
         Refreshes the frame with all its components: grid, counter, button, etc.
         """
-        if cost > 0:
+        if sol_cost > 0:
             state = utils.getStringRepresentation(path[statepointer])
             app.displayStateOnGrid(state)
             app.stepCount.configure(text=app.getStepCountString())
@@ -503,7 +503,7 @@ class InterfaceApp:
             app.backbutton.configure(state='enabled')
             app.fastbackwardbutton.configure(state='enabled')
 
-        if cost == 0 or statepointer == cost:
+        if sol_cost == 0 or statepointer == sol_cost:
             app.fastforwardbutton.configure(state='disabled')
             app.nextbutton.configure(state='disabled')
         else:
