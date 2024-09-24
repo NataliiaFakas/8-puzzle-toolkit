@@ -6,7 +6,7 @@ DEFAULT_INI_STATE = "125340687"
 DEFAULT_MAX_DEPTH = 30
 
 ##### MODIFICAR [4] #####
-ALGORITHMS        = ('BFS', 'DFS', 'ID', 
+ALGORITHMS        = ('BFS', 'DFS (Graph)', 'DFS (Backtracking)', 'ID (Backtraking)', 
                      'Greedy_Manhattan', 'A_Manhattan',
                      'A_Euclidean', 'IDA_Manhattan') 
 ##### ------------- #####
@@ -59,15 +59,23 @@ def batch_run(states, algorithms,
                           utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                           utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                           utils.max_counter, utils.max_rev_counter
-    
-            elif str(algorithm) == 'DFS':
+   
+
+            elif str(algorithm) == 'DFS (Graph)':
                 utils.graphSearch(state, utils.function_N, utils.function_0, max_depth)
                 path, cost, counter, depth, runtime, nodes, max_stored, memory_rep = \
                           utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                           utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                           utils.max_counter, utils.max_rev_counter
     
-            elif str(algorithm) == 'ID':
+            elif str(algorithm) == 'DFS (Backtracking)':
+                utils.DFS_B(state, max_depth)
+                path, cost, counter, depth, runtime, nodes, max_stored = \
+                          utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
+                          utils.graphf_depth, utils.time_graphf, utils.node_counter, \
+                          utils.max_node_stored
+    
+            elif str(algorithm) == 'PI (Backtracking)':
                 utils.ID_B(state)
                 path, cost, counter, depth, runtime, nodes, max_stored = \
                           utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \

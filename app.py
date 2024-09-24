@@ -88,8 +88,8 @@ class InterfaceApp:
 
         ##### MODIFICAR [1] #####
 
-        algorithms = ('BFS', 'DFS', 'ID', 'Greedy_Manhattan', 'A_Manhattan', 
-                      'A_Euclidean', 'IDA_Manhattan')
+        algorithms = ('BFS', 'DFS (Graph)', 'DFS (Backtracking)', 'ID (Backtracking)', 
+                      'Greedy_Manhattan', 'A_Manhattan', 'A_Euclidean', 'IDA_Manhattan')
 
         ##### ------------- #####
 
@@ -255,7 +255,7 @@ class InterfaceApp:
             algorithm = choice
 
             ##### MODIFICAR [2] #####
-            if algorithm in ['DFS']:
+            if algorithm in ['DFS (Graph)', 'DFS (Backtracking)']:
                 cutDepth = int(simpledialog.askstring('Cut depth', 'Please, enter your max depth'))
             ##### ------------- #####
         except:
@@ -405,14 +405,21 @@ class InterfaceApp:
                       utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                       utils.max_counter, utils.max_rev_counter
 
-        elif str(algorithm) == 'DFS':
+        elif str(algorithm) == 'DFS (Graph)':
             utils.graphSearch(initialState, utils.function_N, utils.function_0, cutDepth)
             path, cost, counter, depth, runtime, nodes, max_stored, memory_rep = \
                       utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                       utils.graphf_depth, utils.time_graphf, utils.node_counter, \
                       utils.max_counter, utils.max_rev_counter
 
-        elif str(algorithm) == 'ID':
+        elif str(algorithm) == 'DFS (Backtracking)':
+            utils.DFS_B(initialState,cutDepth)
+            path, cost, counter, depth, runtime, nodes, max_stored = \
+                      utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
+                      utils.graphf_depth, utils.time_graphf, utils.node_counter, \
+                      utils.max_node_stored
+
+        elif str(algorithm) == 'PI (Backtracking)':
             utils.ID_B(initialState)
             path, cost, counter, depth, runtime, nodes, max_stored = \
                       utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
