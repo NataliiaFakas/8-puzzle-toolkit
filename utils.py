@@ -111,9 +111,73 @@ def checkValid(i, j):
     return 1
 
 
+#---------------------------Descolocadas-----------------------------------------------------------------------------------------------------------------------------
+def descolocadas(state):
+    # Estado final esperado
+    objetivo = "123804765"
+    h = 0
+    
+    for i in range(len(state)):
+        # Comparamos cada caracter con el correspondiente en la cadena objetivo
+        if state[i] != objetivo[i] and int(state[i])!=0:
+            h += 1  
+
+    return h  # Devolvemos el total de piezas descolocadas
+
+
+#-----------------------------Secuencia---------------------------------------------------------------------------------------------------------------------------------
+
+def secuencia(state):
+    
+    # Inicializamos h a cero para devolver el número de piezas descolocadas 
+    h = 0
+
+    # Si en la posición 4 no tenemos 0, incrementamos h en 1 
+    if int(state[4]) != 0:
+        h += 1
+
+    for i in range(0, 9):
+        # Si el valor es = 0 o i es 4, salta a la siguiente iteración
+        if i == 4: 
+            continue
+        
+        if int(state[i]) == 0: 
+            h+=2
+        
+        if(int(state[i]) != 8):
+            # Si en la primera fila en las posiciones 1 y 2 no se cumple que su sucesor es una unidad mayor, sumamos 1 a h 
+            if (i <= 1) and (int(state[i]) != int(state[i + 1]) - 1): 
+                h += 2
+            
+            # Si en la posición 2 el sucesor no es 1 ud. mayor, quiere decir que está fuera de lugar
+            elif i == 2 and (int(state[i]) != int(state[5]) - 1):
+                h += 2
+            
+            #Lo mismo para las demás posiciones: 
+            elif i == 3 and (int(state[i]) != int(state[0]) - 1):
+                h += 2
+                
+            elif i == 5 and (int(state[i]) != int(state[8]) - 1): 
+                h += 2
+                
+            elif i == 6 and (int(state[i]) != int(state[3]) - 1): 
+                h += 2
+            
+            elif i == 7 and (int(state[i]) != int(state[6]) - 1):
+                h += 2
+                
+            elif i == 8 and (int(state[i]) != int(state[7]) - 1):
+                 h += 2
+                 
+    return h*3
+
 # heuristic function using manhattan distance
 
 def getManhattanDistance(state):
+     #-------------------------------------------------------------- 
+     # Convierte `state` a cadena si es un entero (es un cambio mío)
+    state = str(state)
+    #-------------------------------------------------------------- 
     h = 0 
     for i in range(1,9):
         goal_pos = end_state.index(str(i))
@@ -144,8 +208,6 @@ def getEuclideanDistance(state):
         h += math.sqrt(pow((goal_pos_row - state_pos_row), 2) + 
                        pow((goal_pos_col - state_pos_col), 2))
     return h
-
-
 
 
 def function_0(x):
@@ -494,4 +556,3 @@ def IDA_B(inputState,function_h):
     time_graphf = float(time.time() - start_time_id)
 
     return 1    
-

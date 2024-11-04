@@ -88,8 +88,8 @@ class InterfaceApp:
 
         ##### MODIFICAR [1] #####
 
-        algorithms = ('BFS', 'DFS_Graph', 'DFS_Backtracking', 'PI_Backtracking', 
-                      'Greedy_Manhattan', 'A_Manhattan', 'A_Euclidean', 'IDA_Manhattan')
+        algorithms = ('BFS', 'DFS_Graph', 'DFS_Backtracking', 'PI_Backtracking'
+                      ,'A_Natdescolocadas', 'A_Natsecuencia', 'Greedy_Manhattan', 'A_Manhattan', 'A_Euclidean', 'IDA_Manhattan')
 
         ##### ------------- #####
 
@@ -449,6 +449,20 @@ class InterfaceApp:
 
         elif str(algorithm) == 'IDA_Manhattan':
             utils.IDA_B(initialState, utils.getManhattanDistance)
+            path, sol_cost, expanded, depth, runtime, generated, max_stored = \
+                      utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
+                      utils.graphf_depth, utils.time_graphf, utils.node_counter, \
+                      utils.max_node_stored
+                      
+        elif str(algorithm) == 'A_Natdescolocadas':
+            utils.IDA_B(initialState, utils.descolocadas)
+            path, sol_cost, expanded, depth, runtime, generated, max_stored = \
+                      utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
+                      utils.graphf_depth, utils.time_graphf, utils.node_counter, \
+                      utils.max_node_stored
+        
+        elif str(algorithm) == 'A_Natsecuencia':
+            utils.IDA_B(initialState, utils.secuencia)
             path, sol_cost, expanded, depth, runtime, generated, max_stored = \
                       utils.graphf_path, utils.graphf_cost, utils.graphf_counter, \
                       utils.graphf_depth, utils.time_graphf, utils.node_counter, \
